@@ -17,9 +17,16 @@ exports.createTask = catchAsync(async (req, res) => {
   });
 });
 
-exports.getTask = (req, res) => {
-  res.json({ id: req.params.id });
-};
+exports.getTask = catchAsync(async (req, res, next) => {
+  const task = await Task.findById(req.params.id);
+  if (!task) {
+    return next(Error("No task found by this id"));
+  }
+  res.status(201).json({
+    result: "success",
+    task,
+  });
+});
 
 exports.updateTask = (req, res) => {
   res.send("update task");
