@@ -28,9 +28,19 @@ exports.getTask = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateTask = (req, res) => {
-  res.send("update task");
-};
+exports.updateTask = catchAsync(async (req, res) => {
+  const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!updatedTask) {
+    return next(Error("No task found by this id"));
+  }
+  res.status(200).json({
+    result: "success",
+    updatedTask,
+  });
+});
 
 exports.deleteTask = (req, res) => {
   res.send("delete task");
