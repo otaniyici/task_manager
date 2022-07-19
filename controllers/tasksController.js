@@ -42,6 +42,10 @@ exports.updateTask = catchAsync(async (req, res) => {
   });
 });
 
-exports.deleteTask = (req, res) => {
-  res.send("delete task");
-};
+exports.deleteTask = catchAsync(async (req, res, next) => {
+  const deletedTask = await Task.findByIdAndDelete(req.params.id);
+  if (!deletedTask) {
+    return next(Error("No task found by this id"));
+  }
+  res.status(204).send();
+});

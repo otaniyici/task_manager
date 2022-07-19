@@ -9,12 +9,8 @@ const port = process.env.PORT;
 
 // middleware
 app.use(morgan("dev"));
+app.use(express.static("./public"));
 app.use(express.json());
-
-// routes
-app.get("/hello", (req, res) => {
-  res.send("<h1>HELLO</h1>");
-});
 
 app.use("/api/v1/tasks", tasks);
 
